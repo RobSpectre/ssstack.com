@@ -66,7 +66,7 @@ function dateForNote(note) {
   const created = new Date(note.createdTimestampUsec / 1000)
   const named = titleDate(note.title ?? '', created)
   // Ignore titles that are far from when the note was written (typos like "27 Nov" for "17 Nov").
-  if (!named || Math.abs(named - created) > 10 * 86400_000) return created
+  if (!named || Math.abs(named - created) > 15 * 86400_000) return created
   // Snap a slightly-off title ("12 Oct" for Sunday the 11th) to the nearest Sunday.
   const sunday = new Date(named)
   const dow = sunday.getUTCDay()

@@ -36,9 +36,26 @@ if (location.hash.includes('stack')) {
     if (!released) document.querySelectorAll('video').forEach(hold)
   }).observe(document.documentElement, { childList: true, subtree: true })
 
-  const release = (event) => {
-    if (event.isTrusted) released = true
+  // Instagram believes the held video is already playing, so letting it handle your
+  // first click would only "pause" it and you'd need a second click. Instead, take
+  // that first click (or Space) ourselves: start the video and keep it from Instagram.
+  const start = (event, video) => {
+    if (released || !event.isTrusted || !video) return
+    released = true
+    event.stopImmediatePropagation()
+    event.preventDefault()
+    video.muted = false
+    video.play()
   }
-  addEventListener('pointerdown', release, true)
-  addEventListener('keydown', release, true)
+  const videoAt = (x, y) => document.elementsFromPoint(x, y).find((el) => el instanceof HTMLVideoElement)
+  addEventListener('click', (event) => start(event, videoAt(event.clientX, event.clientY)), true)
+  addEventListener(
+    'keydown',
+    (event) => {
+      if (event.key === ' ' && !event.target.closest?.('input, textarea, [contenteditable]')) {
+        start(event, videoAt(innerWidth / 2, innerHeight / 2))
+      }
+    },
+    true,
+  )
 }

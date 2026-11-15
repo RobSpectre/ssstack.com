@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "The Stack: hold Instagram videos",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Instagram tabs opened from The Stack wait paused, at the start, with sound on, until you click.",
   "content_scripts": [
     {

@@ -1,0 +1,89 @@
+{
+  "syncedAt": "2026-11-15T00:00:00Z",
+  "links": [
+    {
+      "id": 1,
+      "link": "https://youtube.com/sample-1",
+      "title": "Sample: a very good dog fails at agility",
+      "excerpt": "Sample entry. Run `npm run sync` for the real stack.",
+      "note": "Watch to the end",
+      "cover": "",
+      "domain": "youtube.com",
+      "type": "video",
+      "tags": [],
+      "created": "2026-11-12T14:00:00Z"
+    },
+    {
+      "id": 2,
+      "link": "https://en.wikipedia.org/sample-2",
+      "title": "Sample: the longest Wikipedia rabbit hole",
+      "excerpt": "Sample entry. Run `npm run sync` for the real stack.",
+      "note": "",
+      "cover": "",
+      "domain": "en.wikipedia.org",
+      "type": "article",
+      "tags": [],
+      "created": "2026-11-13T02:30:00Z"
+    },
+    {
+      "id": 3,
+      "link": "https://example.com/sample-3",
+      "title": "Sample: saved the morning of the call",
+      "excerpt": "Sample entry. Run `npm run sync` for the real stack.",
+      "note": "",
+      "cover": "",
+      "domain": "example.com",
+      "type": "link",
+      "tags": [],
+      "created": "2026-11-15T15:00:00Z"
+    },
+    {
+      "id": 4,
+      "link": "https://example.org/sample-4",
+      "title": "Sample: last week, a cursed recipe",
+      "excerpt": "Sample entry. Run `npm run sync` for the real stack.",
+      "note": "",
+      "cover": "",
+      "domain": "example.org",
+      "type": "article",
+      "tags": [],
+      "created": "2026-11-05T18:00:00Z"
+    },
+    {
+      "id": 5,
+      "link": "https://vimeo.com/sample-5",
+      "title": "Sample: last week, a short clip",
+      "excerpt": "Sample entry. Run `npm run sync` for the real stack.",
+      "note": "",
+      "cover": "",
+      "domain": "vimeo.com",
+      "type": "video",
+      "tags": [],
+      "created": "2026-11-03T18:00:00Z"
+    },
+    {
+      "id": 6,
+      "link": "https://example.net/sample-6",
+      "title": "Sample: something from last year",
+      "excerpt": "Sample entry. Run `npm run sync` for the real stack.",
+      "note": "",
+      "cover": "",
+      "domain": "example.net",
+      "type": "link",
+      "tags": [],
+      "created": "2025-03-04T18:00:00Z"
+    },
+    {
+      "id": 7,
+      "link": "https://example.com/sample-7",
+      "title": "Sample: one of the very first",
+      "excerpt": "Sample entry. Run `npm run sync` for the real stack.",
+      "note": "",
+      "cover": "",
+      "domain": "example.com",
+      "type": "image",
+      "tags": [],
+      "created": "2020-11-17T18:00:00Z"
+    }
+  ]
+}

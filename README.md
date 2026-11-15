@@ -35,3 +35,19 @@ a dry run unless you pass `--apply`.
 ```bash
 npx shadcn-vue@latest add https://neobrutalism-vue.vercel.app/r/<name>.json
 ```
+
+## Presenting
+
+Press **Present** on any week for a view sized for sharing a large screen. **Open all**
+opens the week's links in tabs; the browser will block this until you allow pop-ups
+for the site (blocked pop-up icon in the address bar, then "always allow").
+
+### Holding Instagram videos (optional Chrome extension)
+
+Instagram autoplays its videos muted, and a web page cannot control another site's
+tab. The small extension in `extension/` fixes that for tabs opened from The Stack:
+each Instagram video waits paused at the start with sound on, and your first click
+plays it. It only acts on links carrying the `#stack` marker this site adds.
+
+Install once: open `chrome://extensions`, turn on **Developer mode**, choose
+**Load unpacked**, and select the `extension` folder.

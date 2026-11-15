@@ -3,6 +3,7 @@ import { ArrowUpRight, Check } from 'lucide-vue-next'
 import { ref } from 'vue'
 import { Badge } from '@/components/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/card'
+import { outboundUrl } from '@/lib/links'
 import { markSeen, seen } from '@/lib/seen'
 import type { StackLink } from '@/types'
 
@@ -18,7 +19,7 @@ const coverBroken = ref(false)
 
 <template>
   <a
-    :href="link.link"
+    :href="outboundUrl(link)"
     target="_blank"
     rel="noopener noreferrer"
     class="group block h-full rounded-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"

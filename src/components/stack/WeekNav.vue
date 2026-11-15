@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight, CopyPlus, Presentation, X } from 'lucide-vue
 import { computed, ref, watch } from 'vue'
 import { Button } from '@/components/button'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/select'
+import { outboundUrl } from '@/lib/links'
 import { go, route } from '@/lib/route'
 import { markSeen } from '@/lib/seen'
 import { formatSunday } from '@/lib/weeks'
@@ -24,20 +25,23 @@ const byYear = computed(() => {
   return [...groups]
 })
 
-// Opens every link of the week in its own tab. Browsers only allow one new tab per
-// click unless pop-ups are allowed for the site, so count the ones that were refused.
+// Opens every link of the week in its own tab. Browsers allow only one new tab per
+// click until pop-ups are allowed for the site, and that one tab steals focus, hiding
+// any warning here. So it is all or nothing: if any tab is refused, close the ones
+// that did open and stay on this page with instructions.
 const blocked = ref(0)
 function openAll() {
-  blocked.value = 0
-  for (const link of props.selected.links) {
-    const tab = window.open(link.link, '_blank')
-    if (tab) {
-      tab.opener = null // same protection as rel="noopener" on the cards
-      markSeen(link.id)
-    } else {
-      blocked.value++
-    }
+  const links = props.selected.links
+  const tabs = links.map((link) => window.open(outboundUrl(link), '_blank'))
+  blocked.value = tabs.filter((tab) => !tab).length
+  if (blocked.value) {
+    for (const tab of tabs) tab?.close()
+    return
   }
+  tabs.forEach((tab, i) => {
+    tab!.opener = null // same protection as rel="noopener" on the cards
+    markSeen(links[i]!.id)
+  })
 }
 watch(() => props.selected, () => (blocked.value = 0))
 </script>
@@ -76,9 +80,13 @@ watch(() => props.selected, () => (blocked.value = 0))
       <template v-else><Presentation /> Present</template>
     </Button>
 
-    <p v-if="blocked" role="alert" class="w-full rounded-base border-2 border-border bg-accent px-3 py-2 text-sm font-heading text-black">
-      Your browser blocked {{ blocked }} of {{ selected.links.length }} tabs. Allow pop-ups for this
-      site in the address bar, then press Open all again.
-    </p>
+    <div v-if="blocked" role="alert" class="w-full rounded-base border-2 border-border bg-accent px-4 py-3 text-black shadow-shadow">
+      <p class="font-heading">Your browser blocked the tabs, so none were opened.</p>
+      <p class="text-sm">
+        Browsers allow one new tab per click until you allow pop-ups for this site. Click the
+        blocked pop-up icon at the right end of the address bar, choose to always allow pop-ups
+        from this site, then press Open all again.
+      </p>
+    </div>
   </nav>
 </template>

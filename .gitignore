@@ -26,3 +26,6 @@ dist-ssr
 # Secrets and synced data
 .env
 public/stack.json
+
+# Private exports (never deploy or commit)
+data/

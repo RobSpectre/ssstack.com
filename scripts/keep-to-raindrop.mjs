@@ -42,9 +42,37 @@ const dayFormat = new Intl.DateTimeFormat('en-CA', {
   timeZone: STACK_TIMEZONE, year: 'numeric', month: '2-digit', day: '2-digit', weekday: 'short',
 })
 
-/** One note per week: every link in a note carries the moment the note was created. */
+const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
+
+/** The day a title like "Stack - 13 Nov" or "Stack - April 9" names, in the year nearest `near`. */
+function titleDate(title, near) {
+  const hit = title.match(/(\d{1,2})\s*([A-Za-z]{3,9})/) ?? title.match(/([A-Za-z]{3,9})\s+(\d{1,2})/)
+  if (!hit) return null
+  const [day, name] = /\d/.test(hit[1]) ? [hit[1], hit[2]] : [hit[2], hit[1]]
+  const month = MONTHS.indexOf(name.slice(0, 3).toLowerCase())
+  if (month < 0) return null
+  const year = near.getUTCFullYear()
+  return [year - 1, year, year + 1]
+    .map((y) => new Date(Date.UTC(y, month, Number(day), 17))) // midday in New York
+    .sort((x, y) => Math.abs(x - near) - Math.abs(y - near))[0]
+}
+
+/**
+ * One note per week, titled with that week's Sunday. The title wins over the
+ * creation time, because next week's note was sometimes started on the Sunday
+ * evening right after the call, which would file it a week early.
+ */
 function dateForNote(note) {
-  return new Date(note.createdTimestampUsec / 1000)
+  const created = new Date(note.createdTimestampUsec / 1000)
+  const named = titleDate(note.title ?? '', created)
+  // Ignore titles that are far from when the note was written (typos like "27 Nov" for "17 Nov").
+  if (!named || Math.abs(named - created) > 10 * 86400_000) return created
+  // Snap a slightly-off title ("12 Oct" for Sunday the 11th) to the nearest Sunday.
+  const sunday = new Date(named)
+  const dow = sunday.getUTCDay()
+  sunday.setUTCDate(sunday.getUTCDate() + (dow <= 3 ? -dow : 7 - dow))
+  // Keep the real creation time when it already falls in that week.
+  return serviceSunday(created).sunday === sunday.toISOString().slice(0, 10) ? created : sunday
 }
 
 /** The Sunday the app will file a date under, plus the weekday it fell on. */

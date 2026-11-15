@@ -21,7 +21,7 @@
   --border: oklch(0% 0 0);
   --ring: oklch(0% 0 0);
   --overlay: oklch(0% 0 0 / 0.8);
-  --shadow: 4px 4px 0px 0px var(--border);
+  --shadow: 0.25rem 0.25rem 0px 0px var(--border);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -45,11 +45,11 @@
   --color-overlay: var(--overlay);
   --color-ring: var(--ring);
 
-  --spacing-boxShadowX: 4px;
-  --spacing-boxShadowY: 4px;
-  --spacing-reverseBoxShadowX: -4px;
-  --spacing-reverseBoxShadowY: -4px;
-  --radius-base: 10px;
+  --spacing-boxShadowX: 0.25rem;
+  --spacing-boxShadowY: 0.25rem;
+  --spacing-reverseBoxShadowX: -0.25rem;
+  --spacing-reverseBoxShadowY: -0.25rem;
+  --radius-base: 0.625rem;
   --shadow-shadow: var(--shadow);
   --font-weight-base: 500;
   --font-weight-heading: 800;
@@ -65,4 +65,19 @@
   ::selection {
     @apply bg-main text-black;
   }
+}
+
+/*
+ * Presentation view, for sharing a big (4K) screen on a call. Everything is sized
+ * in rem, so growing the root font with the viewport scales the whole page:
+ * about 1.4x on a 1080p screen and 2.75x on 4K.
+ */
+html.present {
+  font-size: clamp(16px, 1.15vw, 48px);
+}
+html.present .border-2 {
+  border-width: 0.125rem;
+}
+html.present .border-b-2 {
+  border-bottom-width: 0.125rem;
 }

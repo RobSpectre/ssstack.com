@@ -14,12 +14,15 @@ if (process.argv.includes('--sample')) {
 
 const { token, collectionId } = config()
 const items = await fetchAll(token, collectionId)
+// Notes that are only list bullets or punctuation (left over from Keep) say nothing.
+const cleanNote = (note = '') => (/[\p{L}\p{N}]/u.test(note) ? note.replace(/^[\s•*\-–—]+/, '').trim() : '')
+
 const links = items.map((r) => ({
   id: r._id,
   link: r.link,
   title: r.title || r.link,
   excerpt: r.excerpt || '',
-  note: r.note || '',
+  note: cleanNote(r.note),
   cover: r.cover || '',
   domain: r.domain || new URL(r.link).hostname,
   type: r.type || 'link',

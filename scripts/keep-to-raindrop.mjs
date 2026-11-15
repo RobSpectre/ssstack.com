@@ -98,7 +98,9 @@ function linksInNote(note) {
   for (const line of lines) {
     for (const raw of line.match(URL_RE) ?? []) {
       const link = clean(raw)
-      found.push({ link, title: titles.get(norm(link)), note: line.replace(URL_RE, '').trim() })
+      // Text sharing the line, minus list bullets; nothing if only punctuation is left.
+      const rest = line.replace(URL_RE, '').replace(/^[\s•*\-–—]+/, '').trim()
+      found.push({ link, title: titles.get(norm(link)), note: /[\p{L}\p{N}]/u.test(rest) ? rest : '' })
     }
   }
   // Link previews Keep attached that never appeared in the text.
